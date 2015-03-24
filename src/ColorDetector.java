@@ -1,7 +1,18 @@
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.FlowLayout;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,12 +22,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class ColorDetector{
     private JFrame panel;
     private JMenuBar menu = new JMenuBar();
     private JButton pickingState = new JButton("choose point");
-    private ImageIcon image = new ImageIcon("angry_beaver-1.gif");
+    private myImage image = new myImage("angry_beaver-1.gif");
 
     public ColorDetector(){
     	JMenu fileMenu = new JMenu("file");
@@ -53,17 +65,63 @@ public class ColorDetector{
     	help.add(about);
     	menu.add(help);
     	
+    	pickingState.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				panel.getRootPane().setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+			}
+    	});
+    	
     	
     	panel = new JFrame();
+        panel.add(menu, BorderLayout.NORTH);
         panel.add(pickingState, BorderLayout.SOUTH);   	
 
-        panel.add(menu, BorderLayout.NORTH);
-
+        //this part is not nice enough
         JLabel label = new JLabel("", image, JLabel.CENTER);
-
         panel.add(label, BorderLayout.WEST);
+        
         panel.pack();
+        panel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setVisible(true);
+    	
+    }
+    
+    private class myImage extends ImageIcon implements MouseListener{
+
+    	public myImage(String pictureLocation){
+    		super(pictureLocation);
+    	}
+    	
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+		}
     	
     }
 }

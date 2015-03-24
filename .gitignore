@@ -1,0 +1,40 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Eclipse IDE #
+local.properties
+bin/
+tmp/
+*~.nib
+*.tmp
+*.bak
+*.swp
+*.launch
+*.pydevproject
+.settings/
+.externalToolBuilders/
+.metadata
+.gradle
+.loadpath
+.cproject
+.buildpath
+.target
+.texlipse
+
+# JetBrains IDEs #
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+out/

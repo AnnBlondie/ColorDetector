@@ -1,4 +1,8 @@
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.FileDialog;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -6,19 +10,31 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class ColorDetector extends JFrame {
     private JMenuBar menu = new JMenuBar();
     private JButton pickingState = new JButton("choose point");
 	private ImagePanel panel = new ImagePanel();
+	private Map<String, Color> primaryColors = new HashMap<String, Color>();//will be remove to controller or model
+
 
     public ColorDetector(){
 		super();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1024, 768);
+		this.setSize(600, 600);
 		this.setTitle("Color detector");
+		setPrimaryColors();//will be remove to controller or model
 
 		JMenu fileMenu = new JMenu("file");
     	JMenuItem newPicture = new JMenuItem("make new");
@@ -77,9 +93,10 @@ public class ColorDetector extends JFrame {
     	});
 
 
-        this.add(menu, BorderLayout.NORTH);
-		this.add(pickingState, BorderLayout.SOUTH);
-		this.add(panel, BorderLayout.CENTER);
+        this.getContentPane().add(menu, BorderLayout.NORTH);
+		//this.getContentPane().add(pickingState, BorderLayout.SOUTH);
+        panel.addMouseListener(panel);
+		this.getContentPane().add(panel, BorderLayout.CENTER);
 	}
 
 	void openFileDialog(){
@@ -96,7 +113,7 @@ public class ColorDetector extends JFrame {
 
 		public ImagePanel() {
 			try {
-				image = ImageIO.read(new File("angry_beaver-1.gif"));
+				image = ImageIO.read(new File("color-wheel-combination-palette.jpg"));
 			} catch (IOException ignore) { /* NOP */ }
 		}
 
@@ -118,36 +135,76 @@ public class ColorDetector extends JFrame {
 			g.drawImage(image, 0, 0, null);
 		}
 
-
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			Color color = new Color(image.getRGB((int)e.getPoint().getX(),(int)e.getPoint().getY()));
+			String message = getPrimaryColor(color);
+            JOptionPane.showMessageDialog(null, message, "COLOR", JOptionPane.INFORMATION_MESSAGE);			
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			getRootPane().setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			getRootPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			getRootPane().setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
+			getRootPane().setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		}
     	
     }
+    
+	private void setPrimaryColors(){//will be remove to controller or model
+
+		primaryColors.put("red",		new Color(255,   0,   0));
+		primaryColors.put("green",		new Color(  0, 255,   0));
+		primaryColors.put("blue",		new Color(  0,   0, 255));
+		primaryColors.put("yellow",		new Color(255, 255,   0));
+		primaryColors.put("white",		new Color(255, 255, 255));
+		primaryColors.put("black",		new Color(  0,   0,   0));
+		primaryColors.put("gray",		new Color(128, 128, 128));
+		primaryColors.put("cyan",		new Color(	0, 255, 255));
+		primaryColors.put("darkGray",	new Color( 64,  64,  64));
+		primaryColors.put("lightGray",	new Color(192, 192, 192));
+		primaryColors.put("magenta",	new Color(255,   0, 255));
+		primaryColors.put("orange",		new Color(255, 200,   0));
+		primaryColors.put("pink",		new Color(255, 175, 175));
+	}
+	
+	private String getPrimaryColor(Color color){//will be remove to controller or model
+		String colorName = "color unknown :(";
+		int distance=256*256*3;
+		for(String col:primaryColors.keySet()){
+			if(colorDistance(color, primaryColors.get(col))<distance){
+				colorName=col;
+				distance=colorDistance(color, primaryColors.get(col));
+			}
+		}
+		return colorName;
+	}
+	
+	private int colorDistance(Color first, Color second){//will be remove to controller or model
+		return (first.getRed()-second.getRed())*(first.getRed()-second.getRed())
+				+(first.getBlue()-second.getBlue())*(first.getBlue()-second.getBlue())
+				+(first.getGreen()-second.getGreen())*(first.getGreen()-second.getGreen());
+	}
+
+
+    public ImagePanel getImagePanel() {
+		return panel;
+	}
+
+	public void setImagePanel(ImagePanel panel) {
+		this.panel = panel;
+	}
 }

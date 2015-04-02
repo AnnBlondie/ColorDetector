@@ -147,9 +147,11 @@ public class ColorDetector extends JFrame {
 		private int panelHeight = 450;
 
 		public ImagePanel() {
-			setPreferredSize(new Dimension(panelWidth, panelHeight));
 			try {
 				image = ImageIO.read(new File("color-wheel-combination-palette.jpg"));
+				panelWidth = Math.max(panelWidth, image.getWidth());
+				panelHeight = Math.max(panelHeight, image.getHeight());
+				setPreferredSize(new Dimension(panelWidth, panelHeight));
 			} catch (IOException ignore) { /* NOP */ }
 		}
 

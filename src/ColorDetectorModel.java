@@ -50,7 +50,7 @@ public class ColorDetectorModel {
 			File file = createFile("allColors.txt");
 			String[] line = new String[5];
 			String colorNameEng = "White";
-			String colorNameRus = "Р‘РµР»С‹Р№";
+			String colorNameRus = "Белый";
 			int colorRed = 255;
 			int colorGreen = 255;
 			int colorBlue = 255;

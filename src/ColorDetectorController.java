@@ -17,17 +17,20 @@ public class ColorDetectorController implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int pelX = e.getX();
-		int pelY = e.getY();
-		if(this.view.getImagePanel().getImage() != null) {
-			if(pelX < this.view.getImagePanel().getImage().getWidth() && pelY < this.view.getImagePanel().getImage().getHeight()) {
-				Color color = new Color(this.view.getImagePanel().getImage().getRGB(pelX, pelY));
+		int pelX = e.getX() - (view.getImagePanel().getWidth()
+					- view.getImagePanel().getImage().getWidth()) / 2;
+		int pelY = e.getY() - (view.getImagePanel().getHeight()
+				- view.getImagePanel().getImage().getHeight()) / 2;
+		if(view.getImagePanel().getImage() != null) {
+			if(0 < pelX && pelX < view.getImagePanel().getImage().getWidth() && 0 < pelY
+					&& pelY < view.getImagePanel().getImage().getHeight()) {
+				Color color = new Color(view.getImagePanel().getImage().getRGB(pelX, pelY));
 				String message = model.getPrimaryColor(color);
-				this.view.setOutput("R: " + color.getRed() + "; G: " + color.getGreen() +
+				view.setOutput("R: " + color.getRed() + "; G: " + color.getGreen() +
 						"; B: " + color.getBlue() + "\n");
-				this.view.setOutput("Primary color: " + message + "\n");
+				view.setOutput("Primary color: " + message + "\n");
 				message = model.getColorName(color);
-				this.view.setOutput("Secondary color is " + message + "!\n");
+				view.setOutput("Secondary color is " + message + "!\n");
 			}
 		}
 	}
